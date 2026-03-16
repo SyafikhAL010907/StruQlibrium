@@ -30,7 +30,7 @@ export default function DashboardPage() {
             desc: "Akses modul pembelajaran statika yang terstruktur dan mudah dipahami.",
             href: "/storage",
             icon: <BookMarked className="w-8 h-8" />,
-            color: "from-violet-600 to-indigo-600",
+            color: "from-violet-600! to-indigo-600!",
             delay: 0.1,
             stats: "3 Topik Tersedia"
           },
@@ -39,9 +39,18 @@ export default function DashboardPage() {
             desc: "Uji pengetahuanmu, kumpulkan koin, dan naikkan level kompetensimu.",
             href: "/battlefield",
             icon: <Swords className="w-8 h-8" />,
-            color: "from-blue-600 to-cyan-600",
+            color: "from-blue-600! to-cyan-600!",
             delay: 0.2,
             stats: "Arena Terbuka"
+          },
+          {
+            title: "Bank Soal",
+            desc: "Perdalam kompetensi teknik Anda dengan latihan soal mandiri berdasarkan topik modul.",
+            href: "/BankSoal",
+            icon: <History className="w-8 h-8" />,
+            color: "from-amber-500! to-orange-600!",
+            delay: 0.3,
+            stats: "Latihan Mandiri"
           }
         ].map((item) => (
           <motion.div
@@ -51,7 +60,7 @@ export default function DashboardPage() {
             transition={{ delay: item.delay, type: "spring", stiffness: 100 }}
           >
             <Link href={item.href} className="group block h-full">
-              <Card className="h-full flex flex-col p-10 hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-500 overflow-hidden relative border-slate-200 dark:border-white/5">
+              <Card className="h-full flex flex-col p-10 hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-500 overflow-hidden relative border-slate-200 dark:border-white/5 rounded-[2.5rem]!">
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-linear-to-br ${item.color} opacity-5 blur-3xl group-hover:opacity-20 transition-opacity`} />
                 <div className={`bg-linear-to-br ${item.color} text-white w-16 h-16 flex items-center justify-center mb-8 rounded-2xl shadow-lg ring-4 ring-white/5 group-hover:rotate-6 transition-transform duration-300`}>
                   {item.icon}
