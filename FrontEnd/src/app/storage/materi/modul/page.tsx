@@ -1,7 +1,7 @@
-// ==========================ini code app/storage/materi/modul/page.tsx======
 "use client";
+export const dynamic = 'force-dynamic';
 
-import { useState, useRef } from "react";
+import { useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -22,7 +22,23 @@ import { useRouter } from "next/navigation";
 import { materials, subjects } from "@/data/materials";
 import { Material, Subject } from "@/types";
 
+// 0. Wrapper with Suspense for Vercel Prerender
 export default function StudyModulePage() {
+  return (
+    <Suspense fallback={
+      <div className="main-container py-20! text-center!">
+        <div className="animate-pulse! flex! flex-col! items-center!">
+          <div className="w-12! h-12! rounded-full! bg-slate-200! dark:bg-white/5! mb-4!" />
+          <h2 className="text-2xl! font-black! uppercase! text-slate-300! dark:text-white/10!">Loading Portal...</h2>
+        </div>
+      </div>
+    }>
+      <StudyModuleContent />
+    </Suspense>
+  );
+}
+
+function StudyModuleContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const subjectId = searchParams.get("subject") || subjects[0].id;

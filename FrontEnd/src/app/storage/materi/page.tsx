@@ -1,7 +1,8 @@
-// ========================ini code app/storage/materi/page.tsx======
 "use client";
+export const dynamic = 'force-dynamic';
 
 import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
@@ -17,9 +18,22 @@ import {
 import Link from "next/link";
 import { subjects, materials } from "@/data/materials";
 import { Subject, Material } from "@/types";
-import { useState } from "react";
-
 export default function SubjectModuleList() {
+  return (
+    <Suspense fallback={
+      <div className="main-container py-20! text-center!">
+        <div className="animate-pulse! flex! flex-col! items-center!">
+          <div className="w-12! h-12! rounded-full! bg-slate-200! dark:bg-white/5! mb-4!" />
+          <h2 className="text-2xl! font-black! uppercase! text-slate-300! dark:text-white/10!">Accessing Records...</h2>
+        </div>
+      </div>
+    }>
+      <SubjectModuleContent />
+    </Suspense>
+  );
+}
+
+function SubjectModuleContent() {
   const searchParams = useSearchParams();
   const subjectId = searchParams.get("subject") || subjects[0].id;
   const [searchQuery, setSearchQuery] = useState("");
