@@ -2,30 +2,22 @@
 
 :root {
   --background: 210 40% 98%;
-  /* #F8FAFC equivalent in HSL */
   --foreground: 222 47% 5%;
-  /* #020617 equivalent in HSL */
   --primary: 262 83% 58%;
   --secondary: 221 83% 53%;
   --border: 214 32% 91%;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(2, 6, 23, 0.1);
   --card-bg: 0 0% 100%;
-  --grid-color: rgba(2, 6, 23, 0.1);
+  --card-border: 214 32% 91%;
 }
 
 .dark {
   --background: 222 47% 5%;
-  /* #020617 */
   --foreground: 210 40% 98%;
-  /* #F8FAFC */
   --primary: 258 90% 77%;
   --secondary: 213 94% 68%;
   --border: 217 33% 17%;
-  --glass-bg: rgba(2, 6, 23, 0.8);
-  --glass-border: rgba(248, 250, 252, 0.1);
-  --card-bg: 222 47% 11%;
-  --grid-color: rgba(248, 250, 252, 0.1);
+  --card-bg: 222 47% 6%;
+  --card-border: rgba(255, 255, 255, 0.05);
 }
 
 @theme {
@@ -39,89 +31,87 @@
     border-color: hsl(var(--border));
   }
 
-  /* 1. ATURAN TEKS: Cuma atur warna teks, JANGAN atur background di sini! */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span,
-  label,
-  li,
-  button {
+  /* 1. TEXT & CONTRAST LOGIC */
+  h1, h2, h3, h4, h5, h6, p, span, label, li, button {
     @apply transition-colors duration-300;
-    color: hsl(var(--foreground)) !important;
   }
 
-  /* 2. ATURAN INPUT: Baru di sini kita paksa background-nya buat input & search */
-  input,
-  textarea {
-    @apply transition-colors duration-300;
-    color: hsl(var(--foreground)) !important;
-    background-color: hsl(var(--background)) !important;
+  /* .text-adaptive implementation */
+  .text-adaptive {
+    color: #0f172a !important; /* Slate 900 for Light */
   }
 
-  /* 3. ATURAN BADGE: Putih di Light, Gelap di Dark */
-  .badge-text {
-    background-color: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    color: #475569 !important;
-    /* slate-600 */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .dark .text-adaptive {
+    color: #ffffff !important; /* White for Dark */
   }
 
-  .dark .badge-text {
-    background-color: rgba(15, 23, 42, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #94a3b8 !important;
+  /* Fallback for all basic elements to ensure they follow theme */
+  h1, h2, h3, h4, h5, h6, p, span, li {
+    color: #0f172a !important;
   }
 
-  .dark .badge-text {
-    color: #94a3b8 !important;
-    /* Abu-abu Slate 400 */
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p, .dark span, .dark li {
+    color: #ffffff !important;
   }
 
-  /* KECUALIKAN LOGO-Q AGAR TETAP GRADASI */
-  .logo-q {
-    -webkit-text-fill-color: transparent !important;
+  /* Area Konten: inherit background agar tidak ada grid mengintip */
+  section, article, main, aside {
+    background-color: inherit !important;
+  }
+
+  /* 2. THEME-AWARE INPUTS */
+  input, textarea, select {
+    @apply transition-all duration-300 rounded-2xl border-2!;
+    color: inherit !important;
+    background-color: #f8fafc !important; /* bg-slate-50 */
+    border-color: #e2e8f0 !important; /* border-slate-200 */
+  }
+
+  .dark input, .dark textarea, .dark select {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
     font-family: var(--font-inter), ui-sans-serif, system-ui;
     transition: background-color 0.3s ease, color 0.3s ease;
-    /* GRID LEBIH HALUS DI LIGHT MODE */
+    /* Grid background restricted to body */
     background-image:
-      linear-gradient(rgba(2, 6, 23, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(2, 6, 23, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
-    background-attachment: fixed;
+      linear-gradient(rgba(2, 6, 23, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(2, 6, 23, 0.03) 1px, transparent 1px) !important;
+    background-size: 40px 40px !important;
+    background-attachment: fixed !important;
   }
 
-  /* GRID DI DARK MODE */
   .dark body {
     background-image:
-      linear-gradient(rgba(248, 250, 252, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(248, 250, 252, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(248, 250, 252, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248, 250, 252, 0.03) 1px, transparent 1px) !important;
   }
 }
 
 @layer utilities {
-  .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
+  .main-container {
+    @apply container mx-auto px-4! md:px-8! lg:px-12! max-w-7xl!;
   }
 
-  .font-outfit {
-    font-family: var(--font-outfit), sans-serif;
+  /* PREMIUM CARDS (Adaptive Theme) */
+  .premium-card {
+    @apply transition-all duration-500 rounded-[2.5rem]! border-2! text-slate-900!;
+    background-color: white !important;
+    border-color: #f1f5f9 !important; /* border-slate-100 */
   }
+
+  .dark .premium-card {
+    @apply text-white!;
+    background-color: rgba(15, 23, 42, 0.8) !important; /* bg-slate-900/80 */
+    backdrop-filter: blur(24px) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .font-outfit { font-family: var(--font-outfit), sans-serif; }
 
   .gradient-text {
     background: linear-gradient(135deg, #7c3aed, #2563eb);
@@ -136,43 +126,26 @@
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     font-weight: 900 !important;
-    /* Extra Bold */
     filter: drop-shadow(0 0 8px rgba(147, 51, 234, 0.3)) !important;
-    /* Subtle Glow */
   }
 
-  .premium-shadow {
-    box-shadow:
-      0 10px 40px -10px rgba(0, 0, 0, 0.1),
-      0 8px 16px -8px rgba(0, 0, 0, 0.1),
-      inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+  .badge-text {
+    @apply px-4! py-1.5! rounded-full! text-[10px]! font-black! uppercase! tracking-widest! inline-flex! items-center! gap-2! border!;
+    background-color: white !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
   }
 
-  .dark .premium-shadow {
-    box-shadow:
-      0 20px 50px -15px rgba(0, 0, 0, 0.5),
-      inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
-  }
-
-  .inner-shadow {
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  }
-
-  .dark .inner-shadow {
-    box-shadow: inset 0 2px 6px 0 rgba(0, 0, 0, 0.4);
+  .dark .badge-text {
+    background-color: rgba(15, 23, 42, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
+  background: #7c3aed;
   border-radius: 10px;
 }

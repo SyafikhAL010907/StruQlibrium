@@ -1,128 +1,116 @@
 // ========================ini code app/storage/materi/page.tsx======
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { 
-  GraduationCap, 
+  BookOpen, 
   ChevronRight, 
-  Search, 
   ArrowLeft,
-  ChevronDown,
+  Clock,
+  Award,
+  CirclePlay,
+  Search
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { subjects, materials } from "@/data/materials";
-import { useState } from "react";
 import { Subject, Material } from "@/types";
+import { useState } from "react";
 
-export default function SubjectCatalog() {
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedSubjectId, setSelectedSubjectId] = useState('all');
+export default function SubjectModuleList() {
+  const searchParams = useSearchParams();
+  const subjectId = searchParams.get("subject") || subjects[0].id;
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const subject = subjects.find((s: Subject) => s.id === subjectId);
+  const subjectModules = materials.filter((m: Material) => 
+    m.subjectId === subjectId && 
+    (m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+     m.description.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
-  // Functional Search Logic
-  const filteredSubjects = subjects.filter((subject: Subject) => {
-    const matchesSubject = subject.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesModules = materials.some((m: Material) => 
-      m.subjectId === subject.id && m.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const isSelectedRole = selectedSubjectId === 'all' || subject.id === selectedSubjectId;
-    return isSelectedRole && (matchesSubject || matchesModules);
-  });
+  if (!subject) return (
+    <div className="main-container py-20! text-center!">
+      <h2 className="text-2xl! font-black! uppercase! text-slate-900! dark:text-white!">Subject Not Found</h2>
+      <Link href="/storage">
+        <Button className="mt-8!">BACK TO CATALOG</Button>
+      </Link>
+    </div>
+  );
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Header Section */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="mb-16"
-      >
-        <Link href="/dashboard" className="inline-flex items-center text-slate-500! hover:text-violet-600! transition-colors font-bold uppercase text-xs tracking-widest mb-6">
-          <ArrowLeft className="mr-2 w-4 h-4" /> BACK TO DASHBOARD
+    <div className="main-container py-12!">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16!">
+        <Link href="/storage" className="inline-flex! items-center! text-slate-500! hover:text-violet-600! transition-colors! font-bold! uppercase! text-xs! tracking-widest! mb-6!">
+          <ArrowLeft className="mr-2! w-4! h-4!" /> KEMBALI KE KATALOG
         </Link>
-        
-        <h1 className="font-outfit text-4xl sm:text-6xl md:text-7xl font-black tracking-tight mb-4 uppercase text-slate-900! dark:text-white!">
-          MATERI <span className="gradient-text">KATALOG</span>
-        </h1>
-        <p className="font-bold text-base md:text-lg max-w-2xl text-slate-600! dark:text-slate-400!">
-          Temukan koleksi lengkap materi teknik sipil yang terorganisir sejajar.
-        </p>
+        <div className="flex! flex-col! md:flex-row! items-start! md:items-end! justify-between! gap-6!">
+          <div className="max-w-3xl!">
+            <p className="text-[10px]! font-black! text-violet-600! uppercase! tracking-[0.4em]! mb-4!">SUBJECT MATERIAL</p>
+            <h1 className="font-outfit! text-3xl! md:text-5xl! lg:text-7xl! font-black! tracking-tight! mb-6! uppercase! text-slate-900! dark:text-white!">
+              {subject.title}
+            </h1>
+            <p className="font-bold! text-slate-600! dark:text-slate-400! text-lg! leading-relaxed!">
+              {subject.description}
+            </p>
+          </div>
+          <div className="flex! gap-4! w-full! md:w-auto!">
+             <div className="relative! w-full! md:w-80!">
+                <Search className="absolute! left-5! top-1/2! -translate-y-1/2! w-5! h-5! text-slate-400!" />
+                <input 
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Cari modul..."
+                  className="w-full! pl-14! pr-6! py-4! rounded-3xl! font-bold! text-sm! placeholder:text-slate-400!"
+                />
+             </div>
+          </div>
+        </div>
       </motion.div>
 
-      {/* Parallel Header - Search Left, Filters Right */}
-      <div className="flex flex-row! items-center! justify-between! w-full! gap-6 mb-16">
-        <div className="relative w-full md:max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari materi atau modul..."
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2! border-slate-200! dark:border-white/10! bg-white! dark:bg-slate-950! text-slate-900! dark:text-white! focus:outline-hidden focus:ring-2! focus:ring-violet-500! transition-all font-bold placeholder:text-slate-400!"
-          />
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <Button 
-              onClick={() => setIsOpen(!isOpen)}
-              className="font-black uppercase text-[10px] tracking-widest h-12 px-6 rounded-xl border-2! bg-white! dark:bg-slate-950! text-slate-900! dark:text-white! border-slate-200! dark:border-white/10! flex items-center gap-3 hover:border-violet-600!"
-            >
-              FILTER <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-            </Button>
-
-            <AnimatePresence>
-              {isOpen && (
-                <motion.div
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.95, opacity: 0 }}
-                  className="absolute top-full right-0 mt-3 w-64 bg-white! dark:bg-slate-950! border-2! border-slate-200! dark:border-white/10! rounded-2xl shadow-2xl! z-50 overflow-hidden"
-                >
-                  <div className="p-2 space-y-1">
-                    {subjects.map((s: Subject) => (
-                      <button key={s.id} onClick={() => { setSelectedSubjectId(s.id); setIsOpen(false); }} className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group ${selectedSubjectId === s.id ? 'bg-violet-600! text-white!' : 'hover:bg-violet-500/10! text-slate-700! dark:text-slate-300!'}`}>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-left">{s.title}</span>
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <Button onClick={() => setSelectedSubjectId('all')} className={`font-black uppercase text-[10px] tracking-widest h-12 px-6 rounded-xl border-2! transition-all ${selectedSubjectId === 'all' ? 'bg-violet-600! text-white! border-violet-600!' : 'bg-white! dark:bg-slate-950! text-slate-500! border-slate-200! dark:border-white/10! hover:border-violet-600!'}`}>ALL</Button>
-        </div>
-      </div>
-
-      {/* Grid Materi */}
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredSubjects.map((subject: Subject, i: number) => (
-          <motion.div key={subject.id} initial={{ scale: 1.1, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: i * 0.1, duration: 0.4 }}>
-            <Card className="h-full flex flex-col p-8 group hover:shadow-2xl hover:shadow-violet-500/5 transition-all duration-500 border-2! border-slate-200! dark:border-white/10! bg-white! dark:bg-slate-950! rounded-[2.5rem]!">
-              <div className="flex items-center justify-between mb-8">
-                <div className="p-4 rounded-2xl bg-violet-600/5! border border-violet-500/10! group-hover:bg-violet-600! group-hover:scale-110 transition-all duration-500">
-                  <GraduationCap className="w-8 h-8 text-violet-600! group-hover:text-white! transition-colors" />
+      <div className="grid! grid-cols-1! md:grid-cols-2! lg:grid-cols-3! gap-8!">
+        {subjectModules.map((modul: Material, i: number) => (
+          <motion.div 
+            key={modul.id} 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            transition={{ delay: i * 0.1 }}
+          >
+            <Card className="premium-card! p-8! h-full! flex! flex-col! group! hover:border-violet-600! transition-all! duration-500!">
+              <div className="flex! items-center! justify-between! mb-8!">
+                <div className="w-14! h-14! rounded-2xl! bg-slate-50! dark:bg-slate-900! border! border-slate-200! dark:border-white/5! flex! items-center! justify-center! group-hover:bg-violet-600! transition-all! duration-500!">
+                  <BookOpen className="w-7! h-7! text-slate-400! group-hover:text-white!" />
                 </div>
-                <span className="text-[24px] font-black text-slate-200! dark:text-white/5! group-hover:text-violet-600/20! transition-colors">{String(i + 1).padStart(2, '0')}</span>
+                <div className="flex! flex-col! items-end!">
+                  <span className="text-[10px]! font-black! text-slate-400! uppercase! tracking-widest!">MODUL</span>
+                  <span className="text-xl! font-black! text-slate-900! dark:text-white! tracking-tighter!">{String(i + 1).padStart(2, '0')}</span>
+                </div>
               </div>
 
-              <h2 className="font-outfit text-2xl font-black uppercase mb-4 tracking-tight group-hover:text-violet-600! transition-colors text-slate-900! dark:text-white!">{subject.title}</h2>
-              <p className="grow text-sm mb-8 font-bold leading-relaxed text-slate-500! dark:text-slate-400!">{subject.description}</p>
+              <h2 className="font-outfit! text-2xl! font-black! uppercase! mb-4! tracking-tight! text-slate-900! dark:text-white! group-hover:text-violet-600! transition-colors!">
+                {modul.title}
+              </h2>
+              <p className="grow! font-bold! text-sm! text-slate-500! dark:text-slate-400! mb-8! leading-relaxed!">
+                {modul.description}
+              </p>
 
-              <Link href={`/storage/materi/${subject.id}`}>
-                <Button variant="primary" className="group/btn! w-full! bg-violet-600! hover:bg-violet-700! text-white!">
-                  PELAJARI MATERI <ChevronRight className="ml-2! w-5! h-5! group-hover/btn:translate-x-1! transition-transform!" />
+              <div className="flex! items-center! gap-4! mb-8!">
+                <div className="badge-text!"><Clock className="w-4! h-4! text-violet-600!" /> 15 MIN</div>
+                <div className="badge-text!"><Award className="w-4! h-4! text-violet-600!" /> 50 XP</div>
+              </div>
+
+              <Link href={`/storage/materi/modul?subject=${subjectId}&modul=${modul.id}`}>
+                <Button className="w-full! py-6! rounded-2xl! bg-violet-600! hover:bg-violet-700! text-white! font-black! uppercase! tracking-widest! text-xs! group/btn!">
+                  MULAI BELAJAR <CirclePlay className="ml-2! w-5! h-5! group-hover/btn:scale-110! transition-transform!" />
                 </Button>
               </Link>
             </Card>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
