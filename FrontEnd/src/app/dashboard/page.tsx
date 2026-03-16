@@ -23,7 +23,8 @@ export default function DashboardPage() {
         <p className="font-bold text-base md:text-lg">Engineer, pilih operasi yang ingin Anda jalankan hari ini.</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+      {/* Container Grid Diperlebar ke max-w-7xl dan kolom diubah ke 3 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {[
           {
             title: "Knowledge Storage",
@@ -35,22 +36,22 @@ export default function DashboardPage() {
             stats: "3 Topik Tersedia"
           },
           {
-            title: "Battlefield",
-            desc: "Uji pengetahuanmu, kumpulkan koin, dan naikkan level kompetensimu.",
-            href: "/battlefield",
-            icon: <Swords className="w-8 h-8" />,
-            color: "from-blue-600! to-cyan-600!",
-            delay: 0.2,
-            stats: "Arena Terbuka"
-          },
-          {
-            title: "Bank Soal",
+            title: "Bank Soal", // SEKARANG DI TENGAH
             desc: "Perdalam kompetensi teknik Anda dengan latihan soal mandiri berdasarkan topik modul.",
             href: "/BankSoal",
             icon: <History className="w-8 h-8" />,
             color: "from-amber-500! to-orange-600!",
-            delay: 0.3,
+            delay: 0.2,
             stats: "Latihan Mandiri"
+          },
+          {
+            title: "Uji Kompetensi", // SEKARANG DI KANAN
+            desc: "Uji pengetahuanmu, kumpulkan koin, dan naikkan level kompetensimu.",
+            href: "/UjiKompetensi/soal1",
+            icon: <Swords className="w-8 h-8" />,
+            color: "from-blue-600! to-cyan-600!",
+            delay: 0.3,
+            stats: "Arena Terbuka"
           }
         ].map((item) => (
           <motion.div
@@ -61,6 +62,7 @@ export default function DashboardPage() {
           >
             <Link href={item.href} className="group block h-full">
               <Card className="h-full flex flex-col p-10 hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-500 overflow-hidden relative border-slate-200 dark:border-white/5 rounded-[2.5rem]!">
+                {/* Sisa konten Card lu tetep sama bro, gak perlu diubah */}
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-linear-to-br ${item.color} opacity-5 blur-3xl group-hover:opacity-20 transition-opacity`} />
                 <div className={`bg-linear-to-br ${item.color} text-white w-16 h-16 flex items-center justify-center mb-8 rounded-2xl shadow-lg ring-4 ring-white/5 group-hover:rotate-6 transition-transform duration-300`}>
                   {item.icon}
