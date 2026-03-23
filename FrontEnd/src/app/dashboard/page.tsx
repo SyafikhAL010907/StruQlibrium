@@ -47,7 +47,7 @@ export default function DashboardPage() {
           {
             title: "Uji Kompetensi", // SEKARANG DI KANAN
             desc: "Uji pengetahuanmu, kumpulkan koin, dan naikkan level kompetensimu.",
-            href: "/UjiKompetensi/soal1",
+            href: "/UjiKompetensi/soal/1",
             icon: <Swords className="w-8 h-8" />,
             color: "from-blue-600! to-cyan-600!",
             delay: 0.3,

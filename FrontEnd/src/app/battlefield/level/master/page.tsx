@@ -92,7 +92,7 @@ export default function MasterLevelPage() {
               </p>
 
               <div className="space-y-4!">
-                <Link href="/UjiKompetensi/soal1">
+                <Link href="/UjiKompetensi/soal/1">
                   <Button className="w-full! py-8! rounded-3xl! bg-linear-to-r! from-amber-500! to-orange-600! text-white! font-black! text-lg! tracking-widest! group!">
                     AMBIL UJI KOMPETENSI
                     <Zap className="ml-3! h-6! group-hover:scale-125! transition-transform!" />

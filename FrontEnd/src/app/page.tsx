@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { motion } from "framer-motion";
 import { ArrowRight, Trophy, BookOpen, Cpu, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Logo from "@/components/ui/Logo";
 
 export default function LandingPage() {
   return (
@@ -21,10 +22,8 @@ export default function LandingPage() {
           transition={{ delay: 0.2 }}
           className="flex flex-col items-center mb-10"
         >
-          <div className="flex items-center font-outfit font-black tracking-tighter uppercase leading-none mb-3">
-            <span className="text-slate-950! dark:text-white! text-2xl md:text-3xl opacity-100!">STRU</span>
-            <span className="logo-q text-4xl md:text-6xl mx-1">Q</span>
-            <span className="text-slate-950! dark:text-white! text-2xl md:text-3xl opacity-100!">LIBRIUM</span>
+          <div className="mb-3">
+            <Logo size="text-2xl md:text-3xl" />
           </div>
           <div className="inline-flex items-center gap-2 bg-violet-500/10 text-slate-600 dark:text-slate-400 px-4 py-2 rounded-full font-bold text-sm border border-violet-500/20">
             <span>PKM-RSH PROJECT 2026</span>
