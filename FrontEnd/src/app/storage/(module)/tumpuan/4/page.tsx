@@ -1,0 +1,15 @@
+import React from 'react';
+import { BookOpen } from "lucide-react";
+
+export default function PageTUMPUAN4() {
+  return (
+    <>
+      <h2 className="font-outfit text-2xl font-black uppercase mb-6 flex items-center gap-3 text-slate-900 dark:text-white">
+        <BookOpen className="text-violet-600 w-6 h-6" /> STUDI KASUS
+      </h2>
+      <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 font-medium leading-relaxed mt-4">
+        <p>Konten untuk bagian STUDI KASUS pada modul tumpuan akan ditampilkan di sini.</p>
+      </div>
+    </>
+  );
+}

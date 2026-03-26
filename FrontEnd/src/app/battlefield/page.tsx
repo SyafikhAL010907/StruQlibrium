@@ -16,7 +16,7 @@ export default function BattlefieldPage() {
       reward: 10,
       color: "from-emerald-500! to-teal-600!",
       description: "Latihan dasar pengenalan gaya dan tumpuan sederhana.",
-      path: "/battlefield/level/easy"
+      path: "/battlefield/easy/1"
     },
     {
       id: "medium",
@@ -26,7 +26,7 @@ export default function BattlefieldPage() {
       reward: 20,
       color: "from-blue-500! to-indigo-600!",
       description: "Perhitungan beban merata dan momen pada balok sederhana.",
-      path: "/battlefield/level/medium"
+      path: "/battlefield/medium/1"
     },
     {
       id: "hard",
@@ -34,19 +34,9 @@ export default function BattlefieldPage() {
       icon: <Zap className="w-8! h-8!" />,
       difficulty: "Advanced",
       reward: 50,
-      color: "from-violet-600! to-purple-600!",
+      color: "from-rose-600! to-purple-600!",
       description: "Analisis struktur kompleks dengan berbagai kombinasi beban.",
-      path: "/battlefield/level/hard"
-    },
-    {
-      id: "master",
-      title: "MASTER",
-      icon: <Trophy className="w-8! h-8!" />,
-      difficulty: "Expert",
-      reward: 100,
-      color: "from-red-600! to-orange-600!",
-      description: "Tantangan tingkat tertinggi bagi para ahli struktural.",
-      path: "/battlefield/level/master"
+      path: "/battlefield/hard/1"
     }
   ];
 
@@ -66,7 +56,7 @@ export default function BattlefieldPage() {
         <p className="font-bold! text-base! md:text-lg! max-w-2xl! text-center! md:text-left! mx-auto! md:mx-0!">Arena pembuktian kompetensi. Selesaikan misi, kumpulkan koin, dan jadilah Master Statika.</p>
       </motion.div>
 
-      <div className="grid! grid-cols-1! sm:grid-cols-2! lg:grid-cols-2! xl:grid-cols-4! gap-6! md:gap-8!">
+      <div className="grid! grid-cols-1! sm:grid-cols-2! lg:grid-cols-3! gap-6! md:gap-8! max-w-6xl! mx-auto!">
         {levels.map((level, i) => (
           <motion.div
             key={level.id}

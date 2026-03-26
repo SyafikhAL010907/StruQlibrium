@@ -23,8 +23,8 @@ export default function DashboardPage() {
         <p className="font-bold text-base md:text-lg">Engineer, pilih operasi yang ingin Anda jalankan hari ini.</p>
       </motion.div>
 
-      {/* Container Grid Diperlebar ke max-w-7xl dan kolom diubah ke 3 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      {/* Container Grid Diperlebar ke max-w-7xl dan kolom diubah ke 2 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {[
           {
             title: "Knowledge Storage",
@@ -36,22 +36,13 @@ export default function DashboardPage() {
             stats: "3 Topik Tersedia"
           },
           {
-            title: "Bank Soal", // SEKARANG DI TENGAH
-            desc: "Perdalam kompetensi teknik Anda dengan latihan soal mandiri berdasarkan topik modul.",
-            href: "/BankSoal",
+            title: "BATTLEFIELD", 
+            desc: "Uji nyali dan asah skill rekayasa lo di berbagai level tantangan.",
+            href: "/battlefield",
             icon: <History className="w-8 h-8" />,
             color: "from-amber-500! to-orange-600!",
             delay: 0.2,
             stats: "Latihan Mandiri"
-          },
-          {
-            title: "Uji Kompetensi", // SEKARANG DI KANAN
-            desc: "Uji pengetahuanmu, kumpulkan koin, dan naikkan level kompetensimu.",
-            href: "/UjiKompetensi/soal/1",
-            icon: <Swords className="w-8 h-8" />,
-            color: "from-blue-600! to-cyan-600!",
-            delay: 0.3,
-            stats: "Arena Terbuka"
           }
         ].map((item) => (
           <motion.div
