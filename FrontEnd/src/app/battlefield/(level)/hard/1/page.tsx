@@ -39,7 +39,7 @@ export default function MissionH1() {
         <svg viewBox="-180 -20 480 300" preserveAspectRatio="xMidYMid meet" className="w-full h-full overflow-visible">
           <VisualDefs />
           {/* Soil fill (right side) */}
-          <motion.rect x="0" y={200 - wallH} width="200" height={wallH} fill="rgba(146,109,57,0.3)" stroke="rgba(146,109,57,0.5)" strokeWidth="1"
+          <motion.rect x="0" width="200" height={wallH} fill="rgba(146,109,57,0.3)" stroke="rgba(146,109,57,0.5)" strokeWidth="1"
             initial={{ height: wallH, y: 200 - wallH }}
             animate={{ height: wallH, y: 200 - wallH }} transition={{ type: 'spring', stiffness: 50, damping: 12 }} />
           {/* Soil hatch */}
@@ -54,7 +54,7 @@ export default function MissionH1() {
             );
           })}
           {/* Wall */}
-          <motion.rect x="-20" y={200 - wallH} width="20" height={wallH} fill="url(#metal_finish)" rx="3"
+          <motion.rect x="-20" width="20" height={wallH} fill="url(#metal_finish)" rx="3"
             initial={{ height: wallH, y: 200 - wallH }}
             animate={{ height: wallH, y: 200 - wallH }} transition={{ type: 'spring', stiffness: 50, damping: 12 }} />
           {/* Ground */}
