@@ -41,19 +41,23 @@ export default function BattlefieldPage() {
   ];
 
   return (
-    <div className="container! mx-auto! px-4! py-12!">
+    <div className="max-w-screen-2xl! mx-auto! px-4! sm:px-8! py-8! md:py-12!">
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="mb-16!"
+        className="mb-16! max-w-6xl! mx-auto!"
       >
         <Link href="/dashboard" className="inline-flex! items-center! text-slate-500! hover:text-violet-600! transition-colors! font-bold! uppercase! text-xs! tracking-widest! mb-6!">
           <ArrowLeft className="mr-2! w-4! h-4!" /> BACK TO DASHBOARD
         </Link>
-        <h1 className="font-outfit! text-4xl! md:text-7xl! font-black! tracking-tight! mb-4! uppercase! text-center! md:text-left!">
-          BATTLE<span className="gradient-text!">FIELD.</span>
+
+        {/* Judul: Ukuran dikecilin, warna diperhalus */}
+        <h1 className="font-outfit! text-3xl! md:text-5xl! lg:text-6xl! font-black! tracking-tight! mb-4! uppercase! text-slate-800! dark:text-white!">
+          BATTLE<span className="gradient-text!">FIELD</span>
         </h1>
-        <p className="font-bold! text-base! md:text-lg! max-w-2xl! text-center! md:text-left! mx-auto! md:mx-0!">Arena pembuktian kompetensi. Selesaikan misi, kumpulkan koin, dan jadilah Master Statika.</p>
+        <p className="font-bold! text-base! md:text-lg! max-w-2xl! text-slate-600! dark:text-slate-400!">
+          Arena pembuktian kompetensi. Selesaikan misi, kumpulkan koin, dan jadilah Master Mekanika.
+        </p>
       </motion.div>
 
       <div className="grid! grid-cols-1! sm:grid-cols-2! lg:grid-cols-3! gap-6! md:gap-8! max-w-6xl! mx-auto!">

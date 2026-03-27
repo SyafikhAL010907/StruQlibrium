@@ -11,16 +11,21 @@ export default function DashboardPage() {
   const { coins } = useGameState();
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-8 md:py-12">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-16 text-center"
+        className="mb-16 text-center px-4" // Tambah px-4 biar gak mentok di HP
       >
-        <h1 className="font-outfit text-4xl md:text-7xl font-black tracking-tight mb-4 uppercase">
+        {/* Judul: Diperbesar skalanya & dipertebal tracking-nya */}
+        <h1 className="font-outfit text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter mb-6 uppercase leading-[0.9]">
           MISSION <span className="gradient-text">CONTROL.</span>
         </h1>
-        <p className="font-bold text-base md:text-lg">Engineer, pilih operasi yang ingin Anda jalankan hari ini.</p>
+
+        {/* Sub-judul: Ditebelin jadi font-extrabold & ukuran dinaikin */}
+        <p className="font-extrabold text-lg md:text-xl lg:text-2xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Engineer, pilih operasi yang ingin Anda jalankan hari ini.
+        </p>
       </motion.div>
 
       {/* Container Grid Diperlebar ke max-w-7xl dan kolom diubah ke 2 */}
@@ -36,7 +41,7 @@ export default function DashboardPage() {
             stats: "3 Topik Tersedia"
           },
           {
-            title: "BATTLEFIELD", 
+            title: "BATTLEFIELD",
             desc: "Uji nyali dan asah skill rekayasa lo di berbagai level tantangan.",
             href: "/battlefield",
             icon: <History className="w-8 h-8" />,

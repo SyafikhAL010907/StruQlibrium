@@ -47,7 +47,7 @@ export default function ModulLayout({ children }: { children: React.ReactNode })
   const progressPercent = ((currentStepIndex + 1) / totalSteps) * 100;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
+    <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-8 md:py-12">
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -56,7 +56,7 @@ export default function ModulLayout({ children }: { children: React.ReactNode })
         <Link href="/storage" className="inline-flex items-center text-slate-500 hover:text-violet-600 transition-colors font-bold uppercase text-xs tracking-widest mb-6">
           <ArrowLeft className="mr-2 w-4 h-4" /> KEMBALI KE LOBBY MODUL
         </Link>
-        <h1 className="font-outfit text-4xl md:text-6xl font-black tracking-tight mb-4 uppercase text-slate-900 dark:text-white">
+        <h1 className="font-outfit text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight mb-4 uppercase text-slate-900 dark:text-white">
           <span className="text-violet-600">MODUL:</span> {moduleInfo.title}
         </h1>
       </motion.div>
@@ -132,26 +132,46 @@ export default function ModulLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 border-slate-200 dark:border-white/10">
-            <h3 className="font-outfit text-xl font-black uppercase mb-6 flex items-center gap-2 text-slate-900 dark:text-white">
-              <Layers className="text-violet-600 w-5 h-5" /> HALAMAN MODUL
-            </h3>
-            
-            <div className="space-y-3">
+          <div className="rounded-3xl overflow-hidden border border-slate-200 dark:border-white/8
+            bg-white dark:bg-slate-900/70 backdrop-blur-xl shadow-sm dark:shadow-none p-5">
+
+            {/* Section Title */}
+            <div className="flex items-center gap-2.5 mb-4 pb-4 border-b border-slate-100 dark:border-white/5">
+              <div className="w-7 h-7 rounded-xl bg-violet-600/10 dark:bg-violet-600/20 flex items-center justify-center shrink-0">
+                <Layers className="text-violet-600 w-3.5 h-3.5" />
+              </div>
+              <h3 className="font-outfit text-xs font-black uppercase tracking-[0.2em] text-slate-700 dark:text-slate-200">
+                HALAMAN MODUL
+              </h3>
+            </div>
+
+            {/* Step List */}
+            <div className="flex flex-col gap-1.5">
               {STEPS.map((s) => {
                 const isActive = stepId === s.id;
                 return (
                   <Link key={s.id} href={`/storage/${moduleId}/${s.id}`}>
-                    <div className={`flex items-center justify-between p-4 rounded-xl transition-all font-bold ${
-                      isActive 
-                        ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/20' 
-                        : 'bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border-transparent hover:border-slate-200 dark:hover:border-white/10 border'
-                    }`}>
-                      <span className="text-sm uppercase tracking-wider">{s.title}</span>
+                    <div className={`
+                      flex items-center justify-between px-4 py-3 rounded-xl
+                      font-bold text-[10px] uppercase tracking-[0.15em]
+                      transition-all duration-300 cursor-pointer border
+                      ${isActive
+                        ? 'bg-violet-600 text-white shadow-[0_4px_20px_rgba(139,92,246,0.3)] border-violet-500'
+                        : `bg-slate-100/50 dark:bg-white/5
+                           border-slate-200 dark:border-white/5
+                           text-slate-500 dark:text-slate-400
+                           hover:bg-slate-200 dark:hover:bg-white/10
+                           hover:border-violet-500/20 dark:hover:border-violet-500/20
+                           hover:text-slate-900 dark:hover:text-slate-200`
+                      }
+                    `}>
+                      <span>{s.title}</span>
                       {isActive ? (
-                        <Check className="w-4 h-4" />
+                        <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                          <Check className="w-2.5 h-2.5" />
+                        </div>
                       ) : (
-                        <ArrowRight className="w-4 h-4 opacity-50" />
+                        <ArrowRight className="w-3 h-3 opacity-30 shrink-0" />
                       )}
                     </div>
                   </Link>
@@ -159,14 +179,19 @@ export default function ModulLayout({ children }: { children: React.ReactNode })
               })}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
+            {/* Lobby Button */}
+            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
               <Link href="/storage">
-                <Button variant="outline" className="w-full font-black tracking-widest text-xs border-slate-300 dark:border-white/20">
-                  <Target className="w-4 h-4 mr-2" /> LOBBY MODUL
+                <Button variant="outline" className="w-full font-black tracking-widest text-xs
+                  border-slate-200 dark:border-white/8
+                  text-slate-500 dark:text-slate-400
+                  hover:border-violet-500/60 hover:text-violet-600 dark:hover:text-violet-400
+                  transition-all duration-200">
+                  <Target className="w-3.5 h-3.5 mr-2" /> LOBBY MODUL
                 </Button>
               </Link>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

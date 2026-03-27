@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 // Reusable Slider Component
 export const CustomSlider = memo(({ label, val, min, max, step, unit, keyName, colorClass, hexColor, onChange }: any) => (
-  <div className="mb-4 sm:mb-6 group relative">
+  <div className="mb-4 sm:mb-6 group relative w-full">
     <div className="flex justify-between items-center mb-1.5 sm:mb-2">
       <div className="flex items-center gap-1.5 sm:gap-2">
          <span className={`w-1 h-3 rounded-full`} style={{ backgroundColor: hexColor }} />

@@ -3,10 +3,10 @@
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  GraduationCap, 
-  ChevronRight, 
-  Search, 
+import {
+  GraduationCap,
+  ChevronRight,
+  Search,
   ArrowLeft,
   ChevronDown,
 } from "lucide-react";
@@ -42,9 +42,10 @@ export default function SubjectCatalog() {
         <Link href="/dashboard" className="inline-flex! items-center! text-slate-500! hover:text-violet-600! transition-colors! font-bold! uppercase! text-xs! tracking-widest! mb-6!">
           <ArrowLeft className="mr-2! w-4! h-4!" /> BACK TO DASHBOARD
         </Link>
-        
-        <h1 className="font-outfit! text-4xl! md:text-6xl! lg:text-7xl! font-black! tracking-tight! mb-4! uppercase! text-slate-900! dark:text-white!">
-          MATERI <span className="gradient-text!">KATALOG</span>
+
+        {/* Judul: Ukuran dikecilin, warna diperhalus */}
+        <h1 className="font-outfit! text-3xl! md:text-5xl! lg:text-6xl! font-black! tracking-tight! mb-4! uppercase! text-slate-800! dark:text-white!">
+          MATERI <span className="gradient-text!">MEKANIKA</span>
         </h1>
         <p className="font-bold! text-base! md:text-lg! max-w-2xl! text-slate-600! dark:text-slate-400!">
           Temukan koleksi lengkap materi teknik sipil yang terorganisir sejajar.

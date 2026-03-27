@@ -1,64 +1,70 @@
 "use client";
-
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useBattlefield } from '../../layout';
-import { CustomSlider, SupportSystem, VisualDefs } from '@/components/battlefield/BattlefieldElements';
+import { CustomSlider, VisualDefs } from '@/components/battlefield/BattlefieldElements';
 import { motion } from 'framer-motion';
 
-export default function Mission3() {
-  const { inputs, handleChange, theme, setCheckFn } = useBattlefield();
-  const { L = 8, w = 5 } = inputs;
-  const [portalReady, setPortalReady] = useState(false);
+export default function MissionE3() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  const { inputs, handleChange, setCheckFn } = useBattlefield();
+  const { V = 20, A_bolt = 200 } = inputs;
 
   useEffect(() => {
-    setPortalReady(!!document.getElementById('visualizer-portal'));
-    setCheckFn((i) => (i.L || 0) === 8 && (i.w || 0) === 5);
+    setCheckFn((i) => i.V === 20 && i.A_bolt === 200);
   }, [setCheckFn]);
 
-  const safeL = L || 8;
-  const safeW = w || 0;
-  
-  const svgW = 600;
-  const getElasticPath = (amp = 1) => {
-    let d = `M 0,0 `;
-    for(let i=1; i<=30; i++) {
-      let x = (i/30) * svgW;
-      let y = amp * Math.sin(Math.PI * (i/30));
-      d += `L ${x},${y} `;
-    }
-    return d;
-  };
-  const d = getElasticPath(safeW * 3);
-  const arrows = Array.from({ length: 11 }, (_, i) => i * (svgW/10));
+  const tau = V / A_bolt; // kN/mm² × 1000 = MPa, or just raw ratio
+  const slideOffset = Math.min(V * 1.5, 30);
+  const boltR = Math.max(Math.min(Math.sqrt(A_bolt / Math.PI), 14), 5);
 
   return (
     <>
       <div className="p-5 sm:p-8 bg-slate-50 dark:bg-slate-950/90 rounded-3xl border border-slate-200 dark:border-white/5 mb-6 sm:mb-10 shadow-inner relative group">
-        <div className="absolute top-6 left-4 sm:left-5 w-1 h-12 bg-cyan-500 rounded-full group-hover:h-16 transition-all duration-500" />
-        <p className="text-slate-600 dark:text-slate-400 text-[13px] sm:text-[15px] leading-relaxed font-bold italic pl-6 sm:pl-8">
-          "Lantai kilang dengan beban jentera agihan w=5 kN/m. Cari panjang rentang L agar momen tidak melebihi 40 kNm. (Target L=8)"
+        <div className="absolute top-6 left-4 sm:left-5 w-1 h-12 bg-rose-600 rounded-full group-hover:h-16 transition-all duration-500" />
+        <p className="text-slate-600 dark:text-slate-400 text-[13px] sm:text-[15px] leading-relaxed font-black italic pl-6 sm:pl-8">
+          "[EASY] Koneksi dua pelat baja dengan satu baut menahan gaya geser V=20kN. Luas baut A=200mm². Hitung tegangan geser: τ = V/A. Target: τ = 0.100 kN/mm²."
         </p>
       </div>
-
-      <div className="grow min-h-[150px]">
-        <CustomSlider label="Panjang Rentang" val={L} min={2} max={10} step={1} unit="m" keyName="L" colorClass={theme.text} hexColor={theme.hex} onChange={handleChange} />
-        <CustomSlider label="Beban Agihan (w)" val={w} min={0} max={20} step={1} unit="kN/m" keyName="w" colorClass={theme.text} hexColor={theme.hex} onChange={handleChange} />
+      <div className="grow min-h-[220px]">
+        <CustomSlider label="Gaya Geser (V)" val={V} min={5} max={50} step={5} unit="kN" keyName="V" colorClass="text-rose-600 dark:text-rose-400" hexColor="#f43f5e" onChange={handleChange} />
+        <CustomSlider label="Luas Baut (A)" val={A_bolt} min={100} max={400} step={20} unit="mm²" keyName="A_bolt" colorClass="text-rose-600 dark:text-rose-400" hexColor="#f43f5e" onChange={handleChange} />
       </div>
 
-      {portalReady && createPortal(
-        <svg viewBox="-50 -150 700 400" preserveAspectRatio="xMidYMid meet" className="w-full h-full overflow-visible">
+      {isMounted && typeof document !== 'undefined' && document.getElementById('visualizer-portal') && createPortal(
+        <svg viewBox="-80 -120 560 300" preserveAspectRatio="xMidYMid meet" className="w-full h-full overflow-visible">
           <VisualDefs />
-          <motion.path d={d} fill="none" stroke="url(#metal_finish)" strokeWidth="22" strokeLinecap="round" animate={{ d }} />
-          <SupportSystem type="pin" x={0} y={0} />
-          <SupportSystem type="roller" x={svgW} y={0} />
-          <motion.g animate={{ y: -40 - safeW * 1.5 }}>
-            <rect x="0" y="25" width={svgW} height="10" fill="#0ea5e9" opacity="0.3" rx="4" />
-            {arrows.map((ax, i) => (
-              <line key={i} x1={ax} y1="0" x2={ax} y2="35" stroke="#0ea5e9" strokeWidth="4" markerEnd="url(#arrowRed)" />
-            ))}
-            <text x={svgW/2} y="-10" textAnchor="middle" fill="#0ea5e9" className="text-[16px] font-black font-mono">w = {safeW} kN/m</text>
+          {/* Bottom plate (fixed) */}
+          <rect x="0" y="30" width="400" height="55" fill="url(#metal_finish)" rx="4" />
+          {/* Top plate (sliding) */}
+          <motion.g animate={{ x: slideOffset }} transition={{ type: 'spring', stiffness: 60, damping: 15 }}>
+            <rect x="60" y="-55" width="340" height="55" fill="url(#metal_finish)" rx="4" />
+            {/* Force arrow on top plate */}
+            <line x1={350} y1="-28" x2={350 + 70} y2="-28" stroke="#f43f5e" strokeWidth="4" strokeLinecap="round" />
+            <polygon points={`${350 + 70},-28 ${350 + 56},-21 ${350 + 56},-35`} fill="#f43f5e" />
+            <text x={350 + 35} y="-42" textAnchor="middle" fill="#f43f5e" fontSize="13" fontWeight="900" fontFamily="monospace">{V} kN</text>
           </motion.g>
+          {/* Shear plane highlight */}
+          <motion.rect
+            x="55" y="-5" width="320" height="38"
+            fill="rgba(244,63,94,0.12)" stroke="#f43f5e" strokeWidth="1.5" strokeDasharray="6,4"
+            animate={{ x: 55 + slideOffset * 0.3 }}
+            transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+          />
+          {/* Bolt */}
+          <circle cx="210" cy="12" r={boltR} fill="#1e293b" stroke="#f43f5e" strokeWidth="3" />
+          <circle cx="210" cy="12" r={boltR * 0.35} fill="#f43f5e" />
+          {/* Reaction arrow on bottom plate */}
+          <line x1="-10" y1="57" x2="-70" y2="57" stroke="#64748b" strokeWidth="4" strokeLinecap="round" />
+          <polygon points="-70,57 -56,50 -56,64" fill="#64748b" />
+          {/* Result labels */}
+          <text x="200" y="115" textAnchor="middle" fill="#f43f5e" fontSize="14" fontWeight="900" fontFamily="monospace">
+            τ = {tau.toFixed(3)} kN/mm²
+          </text>
+          <text x="200" y="136" textAnchor="middle" fill="#64748b" fontSize="11" fontFamily="monospace">Shear Plane Area = {A_bolt} mm²</text>
         </svg>,
         document.getElementById('visualizer-portal')!
       )}

@@ -1,56 +1,66 @@
 "use client";
-
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useBattlefield } from '../../layout';
-import { CustomSlider, SupportSystem, VisualDefs } from '@/components/battlefield/BattlefieldElements';
+import { CustomSlider, VisualDefs } from '@/components/battlefield/BattlefieldElements';
 import { motion } from 'framer-motion';
 
-export default function Mission2() {
-  const { inputs, handleChange, theme, setCheckFn } = useBattlefield();
-  const { L = 8, oh = 2, P = 15 } = inputs;
-  const [portalReady, setPortalReady] = useState(false);
+export default function MissionE2() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  const { inputs, handleChange, setCheckFn } = useBattlefield();
+  const { P = 50, A = 100 } = inputs;
 
   useEffect(() => {
-    setPortalReady(!!document.getElementById('visualizer-portal'));
-    setCheckFn((i) => (i.L || 0) === 8 && (i.oh || 0) === 2 && (i.P || 0) === 15);
+    setCheckFn((i) => i.P === 50 && i.A === 100);
   }, [setCheckFn]);
 
-  const safeL = L || 8;
-  const safeOH = oh || 0;
-  const safeP = P || 0;
-
-  const svgW = 600;
-  const L_main = safeL - safeOH; 
-  const supportX = (L_main / safeL) * svgW;
-  const deflPos = safeP * 0.8;
-  let d = `M 0,0 Q ${supportX/2},${-deflPos*0.2} ${supportX},0 Q ${supportX + ((svgW - supportX)/2)},${deflPos/2} ${svgW},${deflPos}`;
+  const stress = (P / A); // kN/cm²
+  const rodThickness = Math.max(Math.min(A * 0.3, 55), 15);
+  const arrowOffset = Math.min(P * 1.2, 90);
 
   return (
     <>
       <div className="p-5 sm:p-8 bg-slate-50 dark:bg-slate-950/90 rounded-3xl border border-slate-200 dark:border-white/5 mb-6 sm:mb-10 shadow-inner relative group">
-        <div className="absolute top-6 left-4 sm:left-5 w-1 h-12 bg-emerald-500 rounded-full group-hover:h-16 transition-all duration-500" />
-        <p className="text-slate-600 dark:text-slate-400 text-[13px] sm:text-[15px] leading-relaxed font-bold italic pl-6 sm:pl-8">
-          "Struktur lantai balkoni L=8m dengan anjungan (overhang) 2m. Laraskan beban hujung seberat 15kN!"
+        <div className="absolute top-6 left-4 sm:left-5 w-1 h-12 bg-rose-600 rounded-full group-hover:h-16 transition-all duration-500" />
+        <p className="text-slate-600 dark:text-slate-400 text-[13px] sm:text-[15px] leading-relaxed font-black italic pl-6 sm:pl-8">
+          "[EASY] Batang baja ditarik aksial dengan P=50kN. Luas penampang A=100 cm². Hitung tegangan: σ = P/A. Target: σ = 0.5 kN/cm²."
         </p>
       </div>
-
-      <div className="grow min-h-[200px]">
-        <CustomSlider label="Panjang Utama" val={L} min={4} max={12} step={1} unit="m" keyName="L" colorClass={theme.text} hexColor={theme.hex} onChange={handleChange} />
-        <CustomSlider label="Anjungan (oh)" val={oh} min={1} max={L-1} step={0.5} unit="m" keyName="oh" colorClass={theme.text} hexColor={theme.hex} onChange={handleChange} />
-        <CustomSlider label="Beban Hujung" val={P} min={0} max={50} step={5} unit="kN" keyName="P" colorClass={theme.text} hexColor={theme.hex} onChange={handleChange} />
+      <div className="grow min-h-[220px]">
+        <CustomSlider label="Gaya Tarik (P)" val={P} min={10} max={100} step={5} unit="kN" keyName="P" colorClass="text-rose-600 dark:text-rose-400" hexColor="#f43f5e" onChange={handleChange} />
+        <CustomSlider label="Luas Penampang (A)" val={A} min={50} max={200} step={10} unit="cm²" keyName="A" colorClass="text-rose-600 dark:text-rose-400" hexColor="#f43f5e" onChange={handleChange} />
       </div>
 
-      {portalReady && createPortal(
-        <svg viewBox="-50 -150 700 400" preserveAspectRatio="xMidYMid meet" className="w-full h-full overflow-visible">
+      {isMounted && typeof document !== 'undefined' && document.getElementById('visualizer-portal') && createPortal(
+        <svg viewBox="-160 -90 620 220" preserveAspectRatio="xMidYMid meet" className="w-full h-full overflow-visible">
           <VisualDefs />
-          <motion.path d={d} fill="none" stroke="url(#metal_finish)" strokeWidth="22" strokeLinecap="round" animate={{ d }} />
-          <SupportSystem type="pin" x={0} y={0} />
-          <SupportSystem type="roller" x={supportX} y={0} />
-          <motion.g animate={{ x: svgW, y: deflPos - 60 - safeP*0.6 }}>
-            <line x1="0" y1="0" x2="0" y2="55" stroke="#ef4444" strokeWidth="8" markerEnd="url(#arrowRed)" filter="url(#ultraGlow)" />
-            <text y="-20" textAnchor="middle" fill="#ef4444" className="text-[16px] font-black font-mono">{safeP}kN</text>
+          {/* Rod body */}
+          <motion.rect
+            x="0" y={-rodThickness / 2} width="300" height={rodThickness}
+            fill="url(#metal_finish)" rx="6"
+            animate={{ height: rodThickness, y: -rodThickness / 2 }}
+            transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+          />
+          {/* Left pull arrow */}
+          <motion.g animate={{ x: -arrowOffset }} transition={{ type: 'spring', stiffness: 60, damping: 15 }}>
+            <line x1={arrowOffset} y1="0" x2="6" y2="0" stroke="#f43f5e" strokeWidth="4" strokeLinecap="round" />
+            <polygon points={`${arrowOffset},0 ${arrowOffset - 14},-7 ${arrowOffset - 14},7`} fill="#f43f5e" />
+            <text x={arrowOffset / 2} y="-18" textAnchor="middle" fill="#f43f5e" fontSize="13" fontWeight="900" fontFamily="monospace">{P} kN</text>
           </motion.g>
+          {/* Right pull arrow */}
+          <motion.g animate={{ x: arrowOffset }} transition={{ type: 'spring', stiffness: 60, damping: 15 }}>
+            <line x1={300 - arrowOffset} y1="0" x2={294} y2="0" stroke="#f43f5e" strokeWidth="4" strokeLinecap="round" />
+            <polygon points={`${300 - arrowOffset},0 ${300 - arrowOffset + 14},-7 ${300 - arrowOffset + 14},7`} fill="#f43f5e" />
+            <text x={300 - arrowOffset / 2} y="-18" textAnchor="middle" fill="#f43f5e" fontSize="13" fontWeight="900" fontFamily="monospace">{P} kN</text>
+          </motion.g>
+          {/* Result */}
+          <text x="150" y="70" textAnchor="middle" fill="#f43f5e" fontSize="15" fontWeight="900" fontFamily="monospace">
+            σ = {stress.toFixed(3)} kN/cm²
+          </text>
+          <text x="150" y="92" textAnchor="middle" fill="#64748b" fontSize="11" fontFamily="monospace">Target: 0.500 kN/cm²</text>
         </svg>,
         document.getElementById('visualizer-portal')!
       )}

@@ -10,6 +10,16 @@ import Footer from "@/components/layout/Footer";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
+export const metadata: Metadata = {
+  title: "StruQlibrium",
+  description: "Platform pembelajaran gamifikasi untuk siswa SMK Konstruksi.",
+  icons: {
+    icon: "/images/LogoStruQlibrium.png",
+    shortcut: "/images/LogoStruQlibrium.png",
+    apple: "/images/LogoStruQlibrium.png",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
